@@ -50,4 +50,13 @@ rec {
       enableParallelBuilding = true;
     }
   );
+
+  release = pkgs.releaseTools.aggregate {
+    name = "stdenv-tools-${version}";
+    constituents = [
+      tarball
+      build.x86_64-linux
+      build.i686-linux
+    ];
+  };
 }
