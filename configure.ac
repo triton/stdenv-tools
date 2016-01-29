@@ -18,6 +18,31 @@ LT_INIT
 AC_PROG_CXX
 AC_PROG_CXX_C_O
 AX_CXX_COMPILE_STDCXX_11(, mandatory)
+AC_LANG([C++])
+
+PKG_PROG_PKG_CONFIG
+
+PKG_CHECK_MODULES([rapidjson], RapidJSON >= 1.0.0)
+saved_CFLAGS="$CFLAGS"
+CFLAGS="$rapidjson_CFLAGS"
+AC_CHECK_HEADER(
+  [rapidjson/reader.h],
+  [true],
+  [AC_MSG_FAILURE([rapidjson/reader.h not found])],
+)
+CFLAGS="$saved_CFLAGS"
+
+AC_CHECK_HEADER(
+  [libpkgconf/libpkgconf.h],
+  [true],
+  [AC_MSG_FAILURE([libpkgconf/libpkgconf.h not found])],
+)
+AC_CHECK_LIB(
+  [pkgconf],
+  [pkgconf_pkg_find],
+  [AC_SUBST([PKGCONF_LIBS], [-lpkgconf])],
+  [AC_MSG_FAILURE([pkgconf not found])]
+)
 
 AC_CONFIG_FILES([
   Makefile

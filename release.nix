@@ -37,7 +37,13 @@ rec {
     name = "stdenv-tools-tarball";
     inherit version src;
     versionSuffix = "";
-    nativeBuildInputs = [ pkgs.autoconf-archive ];
+    nativeBuildInputs = with pkgs; [
+      autoconf-archive
+    ];
+    buildInputs = with pkgs; [
+      rapidjson
+      pkgconf
+    ];
   };
 
   build = pkgs.lib.genAttrs [ "x86_64-linux" "i686-linux" ] (system:
@@ -46,8 +52,11 @@ rec {
     in pkgs'.releaseTools.nixBuild {
       name = "stdenv-tools";
       src = tarball;
+      buildInputs = with pkgs'; [
+        rapidjson
+        pkgconf
+      ];
       doCheck = true;
-      enableParallelBuilding = true;
     }
   );
 
