@@ -48,7 +48,7 @@ rec {
 
   build = pkgs.lib.genAttrs [ "x86_64-linux" "i686-linux" ] (system:
     let
-      pkgs' = import <nixpkgs> { inherit system; };
+      pkgs' = import <nixpkgs> { targetSystem = system; hostSystem = system; };
     in pkgs'.releaseTools.nixBuild {
       name = "stdenv-tools";
       src = tarball;
